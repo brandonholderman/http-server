@@ -5,6 +5,7 @@ import json
 import sys
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+    """Request Handler"""
     def do_GET(self):
         parsed_path = urlparse(self.path)
         parsed_qs = parse_qs(parsed_path.query)
@@ -37,7 +38,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
 
-            self.wfile.write(cow.Cheese().milk('Use /cow?msg="text to see your message').encode('utf8'))
+            self.wfile.write(cow.Cheese().milk('Use /cow?msg="text" to see your message').encode('utf8'))
             return
 
         elif parsed_path.path == '/cow':
@@ -78,7 +79,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             content = {
-                'content': cow.Ren().milk(msg)
+                'content': cow.Cheese().milk(msg)
             }
             self.wfile.write(json.dumps(content).encode('utf8'))
         else:
