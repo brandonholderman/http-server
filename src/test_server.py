@@ -4,10 +4,13 @@ import pytest
 import json
 
 def test_server_sends_200_response():
-    response = requests.post('http://127.0.0.1:3000')
-    assert response.status_code == 200
+    """
+    Test for 200 response and checks the content on our page
+    """
+    response = requests.get('http://127.0.0.1:3000')
+    assert response.status_code == 200    
     assert response.text == '''
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title> cowsay </title>
@@ -27,12 +30,18 @@ def test_server_sends_200_response():
 </html>'''
 
 def test_server_sends_404_response():
+    """
+    Test seerver gets back a not found response
+    """
     response = requests.get('http://127.0.0.1:3000/monkey')
     assert response.status_code == 404
     assert response.text == 'Not Found'
 
 def test_server_sends_qs_back():
+    """
+    Test server gets back a query string
+    """
     response = requests.get(
         'http://127.0.0.1:3000/cow?msg="hello world"')
     assert response.status_code == 200
-    assert response.text == cow.Cheese().milk('"hello world')
+    assert response.text == cow.Cheese().milk('"hello world"')

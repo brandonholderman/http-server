@@ -5,7 +5,9 @@ import json
 import sys
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
-    """Request Handler"""
+    """
+    Creates a request handler for http requests and sends response
+    """
     def do_GET(self):
         parsed_path = urlparse(self.path)
         parsed_qs = parse_qs(parsed_path.query)
@@ -14,7 +16,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
 
-            self.wfile.write(b'''<!DOCTYPE html>
+            self.wfile.write(b'''
+<!DOCTYPE html>
 <html>
 <head>
     <title> cowsay </title>
@@ -32,13 +35,12 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     </main>
 </body>
 </html>''')
-            return
 
         elif parsed_path.path == '/cowsay':
             self.send_response(200)
             self.end_headers()
 
-            self.wfile.write(cow.Cheese().milk('Use /cow?msg="text" to see your message').encode('utf8'))
+            self.wfile.write(cow.Cheese().milk('Use /cow msg="text" to see your message').encode('utf8'))
             return
 
         elif parsed_path.path == '/cow':
@@ -63,6 +65,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(b'Not Found')
 
     def do_POST(self):
+        """
+        Allows the user to add their own query string to the url
+        """
         parsed_path = urlparse(self.path)
         parsed_qs = parse_qs(parsed_path.query)
 
@@ -89,10 +94,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 def create_server():
+    """
+    Creates our server assigning the local host and port and type of server being used
+    """
     return HTTPServer(('127.0.0.1', 3000), SimpleHTTPRequestHandler)
 
 
 def run_forever():
+    """
+    Runs the server until told to shut down
+    """
     server = create_server()
 
     try:
